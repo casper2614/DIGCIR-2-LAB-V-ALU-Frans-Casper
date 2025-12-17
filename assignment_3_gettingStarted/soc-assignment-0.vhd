@@ -171,7 +171,7 @@ BEGIN
 --! and shall be replaced by your function.  
 --! See assignment 1-c in the lab manual.
 
-   y <= u OR v OR W OR x;
+   y <= ((NOT u) OR v OR (NOT x)) AND ((NOT u) OR (NOT v) OR (NOT w)) AND (u OR (NOT v) OR (NOT w)) AND (u OR v OR w OR x) AND (u OR v OR (NOT w) OR x)
 
 
 --! Code for cosmetic reasons
