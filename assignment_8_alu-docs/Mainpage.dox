@@ -1,0 +1,18 @@
+/*!
+
+\mainpage SOC assignment ALU
+
+An arithmetic logic unit (ALU) is a combinational digital electronic circuit that performs arithmetic and bitwise operations on integer binary numbers. An ALU is a fundamental building block of many types of computing circuits. One example is the central processing unit (CPU) of a computer (Wikipedia, 2019).
+
+# About the project
+
+Although the ALU can be built from “scratch” it was chosen for the purpose of education to provide a framework for the ALU in which the student will “drop” individual components. These components focus on specific aspects of the VHDL language. 
+
+The framework is built using structural VHDL. For this assignment the structural VHDL will allow the student to focus on the VHDL language while not being distracted to less relevant topics at this stage of the course. At the same time the use of structural VHDL will aid in gaining a success experience and delivering a working product at the end of the assignment.
+
+# Student docomentation
+
+This file can be used by students to document theyr ALU implementation
+
+ 
+ */
