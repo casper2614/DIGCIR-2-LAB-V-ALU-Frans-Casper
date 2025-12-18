@@ -1,4 +1,4 @@
---------------------------------------------------------------------
+-- --------------------------------------------------------------------
 --! \file      soc-assignment-0.vhd
 --! \date      see top of 'Version History'
 --! \brief     D-H-EHE-SOC assignment 0 
@@ -7,9 +7,9 @@
 --!
 --! \todo Students that submit this code have to complete their details:
 --!
---! Student 1 name         : 
---! Student 1 studentnumber: 
---! Student 1 email address: 
+--! Student 1 name         : Casper Janssen
+--! Student 1 studentnumber: 2171774
+--! Student 1 email address: CN.Janssen@student.han.nl
 --!
 --! Student 2 name         : 
 --! Student 2 studentnumber: 
@@ -171,7 +171,11 @@ BEGIN
 --! and shall be replaced by your function.  
 --! See assignment 1-c in the lab manual.
 
-   y <= ((NOT u) OR v OR (NOT x)) AND ((NOT u) OR (NOT v) OR (NOT w)) AND (u OR (NOT v) OR (NOT w)) AND (u OR v OR w OR x) AND (u OR v OR (NOT w) OR x)
+   y <= (NOT u OR v OR NOT x) AND
+        (NOT u OR NOT v OR NOT w) AND
+        (u OR NOT v OR w) AND
+        (u OR v OR w OR x) AND
+        (u OR v OR NOT w OR NOT x); --! Doesn't work, karnaugh maps have been checked and function rewriten multiple times.
 
 
 --! Code for cosmetic reasons
