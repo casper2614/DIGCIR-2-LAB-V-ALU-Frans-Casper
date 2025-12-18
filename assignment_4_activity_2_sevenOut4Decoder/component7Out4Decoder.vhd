@@ -7,9 +7,9 @@
 --!
 --! \todo Students that submit this code have to complete their details:
 --!
---! -Student 1 name         : 
---! -Student 1 studentnumber: 
---! -Student 1 email address: 
+--! -Student 1 name         : Casper Janssen
+--! -Student 1 studentnumber: 2171774
+--! -Student 1 email address: CN.Janssen@student.han.nl
 --!
 --! -Student 2 name         : 
 --! -Student 2 studentnumber: 

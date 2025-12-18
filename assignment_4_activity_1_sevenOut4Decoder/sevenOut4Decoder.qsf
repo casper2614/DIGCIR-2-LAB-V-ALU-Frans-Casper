@@ -102,14 +102,6 @@ set_location_assignment PIN_V22 -to DRAM_LDQM
 set_location_assignment PIN_U22 -to DRAM_RAS_N
 set_location_assignment PIN_J21 -to DRAM_UDQM
 set_location_assignment PIN_V20 -to DRAM_WE_N
-set_location_assignment PIN_C14 -to HEX0[0]
-set_location_assignment PIN_E15 -to HEX0[1]
-set_location_assignment PIN_C15 -to HEX0[2]
-set_location_assignment PIN_C16 -to HEX0[3]
-set_location_assignment PIN_E16 -to HEX0[4]
-set_location_assignment PIN_D17 -to HEX0[5]
-set_location_assignment PIN_C17 -to HEX0[6]
-set_location_assignment PIN_D15 -to HEX0[7]
 set_location_assignment PIN_C18 -to HEX1[0]
 set_location_assignment PIN_D18 -to HEX1[1]
 set_location_assignment PIN_E18 -to HEX1[2]
@@ -162,7 +154,6 @@ set_location_assignment PIN_E14 -to LEDR[6]
 set_location_assignment PIN_D14 -to LEDR[7]
 set_location_assignment PIN_A11 -to LEDR[8]
 set_location_assignment PIN_B11 -to LEDR[9]
-set_location_assignment PIN_A12 -to SW[4]
 set_location_assignment PIN_B12 -to SW[5]
 set_location_assignment PIN_A13 -to SW[6]
 set_location_assignment PIN_A14 -to SW[7]
@@ -232,4 +223,13 @@ set_location_assignment PIN_D12 -to input[2] -comment SW[2]
 set_location_assignment PIN_C12 -to input[3] -comment SW[3]
 set_location_assignment PIN_F15 -to ctrl -comment SW[9]
 set_global_assignment -name VECTOR_WAVEFORM_FILE Waveform.vwf
+set_location_assignment PIN_C14 -to display[0]
+set_location_assignment PIN_E15 -to display[1]
+set_location_assignment PIN_C15 -to display[2]
+set_location_assignment PIN_C16 -to display[3]
+set_location_assignment PIN_E16 -to display[4]
+set_location_assignment PIN_D17 -to display[5]
+set_location_assignment PIN_C17 -to display[6]
+set_location_assignment PIN_D15 -to display[7]
+set_location_assignment PIN_A12 -to dot
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
