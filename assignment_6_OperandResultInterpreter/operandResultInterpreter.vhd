@@ -126,29 +126,134 @@ USE ieee.numeric_std.all;     --! SIGNED
 ------------------------------------------------------------------------------
 ENTITY operandResultInterpreter is
 
+     GENERIC (
+      N: INTEGER := 4;  --! logic unit is designed for 4-bits
+      
       --! Implement here CONSTANTS as GENERIC when required.
-
+		
+	ZERO : STD_LOGIC_VECTOR(0 TO 6) := "0000001";
+   ONE : STD_LOGIC_VECTOR(0 TO 6) := "1001111";
+   TWO: STD_LOGIC_VECTOR(0 TO 6) := "0010010";
+   THREE: STD_LOGIC_VECTOR(0 TO 6) := "0000110";
+   FOUR : STD_LOGIC_VECTOR(0 TO 6) := "1001100";
+   FIVE : STD_LOGIC_VECTOR(0 TO 6) := "0100100";
+   SIX : STD_LOGIC_VECTOR(0 TO 6) := "0100000";
+   SEVEN : STD_LOGIC_VECTOR(0 TO 6) := "0001111";
+   EIGHT : STD_LOGIC_VECTOR(0 TO 6) := "0000000";
+   NINE : STD_LOGIC_VECTOR(0 TO 6) := "0000100";
+   HEX_A : STD_LOGIC_VECTOR(0 TO 6) := "0001000";
+   HEX_b : STD_LOGIC_VECTOR(0 TO 6) := "1100000";
+   HEX_C : STD_LOGIC_VECTOR(0 TO 6) := "0110001";
+   HEX_d : STD_LOGIC_VECTOR(0 TO 6) := "1000010";
+   HEX_E : STD_LOGIC_VECTOR(0 TO 6) := "0110000";
+   HEX_F : STD_LOGIC_VECTOR(0 TO 6) := "0111000";
+   BLANK : STD_LOGIC_VECTOR(0 TO 6) := "1111111";
+	
+	PLUS	: STD_LOGIC_VECTOR(0 TO 6) 	:= "1111000";
+	NEGATIVE : STD_LOGIC_VECTOR(0 TO 6) := "1111110"
+		
+   );
+	
+   
    PORT (
-      opcode :           IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! 4-bit opcode
-      result :           IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! n-bit binary input carrying Result
-      signed_operation : IN   STD_LOGIC;
+      opcode :           	IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! 4-bit opcode
+      result :           	IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! n-bit binary input carrying Result
+      signed_operation : 	IN   STD_LOGIC;
       hexSignal0,
-      hexSignal1 :       OUT  STD_LOGIC_VECTOR(3 DOWNTO 0);
-      dotSignal0,
+      hexSignal1 :       	OUT  STD_LOGIC_VECTOR(3 DOWNTO 0);
+      dotSignal0,	
       control0,
       dotSignal1,
-      control1 :         OUT  STD_LOGIC
+      control1 :         	OUT  STD_LOGIC;
+		
+		HEX0 : OUT STD_LOGIC_VECTOR(0 TO 7);
+		HEX1 : OUT STD_LOGIC_VECTOR(0 TO 7);
+		
+		A	:				IN  STD_LOGIC_VECTOR (N-1 DOWNTO 0); --Operand A
+		B	:				IN  STD_LOGIC_VECTOR (N-1 DOWNTO 0)  --Operand B
+		
+		
    );
    
 END ENTITY operandResultInterpreter;
 ------------------------------------------------------------------------------
 ARCHITECTURE implementation OF operandResultInterpreter IS
 
-   -- Implement here the SIGNALS to your descretion
+
+
+
+   -- Implement here the SIGNALS to your descretion\
+	
+	
+	SIGNAL u_A 	: UNSIGNED(N-1 DOWNTO 0); 
+	SIGNAL u_B	: UNSIGNED(N-1 DOWNTO 0);
+	SIGNAL u_R	: UNSIGNED(N   DOWNTO 0);
+	SIGNAL u_C  : UNSIGNED(N	DOWNTO 0);
+	
+	SIGNAL bcdOpgeteld	:	UNSIGNED(N DOWNTO 0);
+	SIGNAL bcdAntwoord	:	UNSIGNED(N DOWNTO 0);
+	
+	SIGNAL tussenResult 	: 	STD_LOGIC_VECTOR(N DOWNTO 0);
 
 BEGIN
 
-   -- Implement here your logic.
-
+	bcdOpgeteld <= ('0' & u_A) + ('0' & u_B) + u_C;
+	bcdAntwoord <= bcdOpgeteld + 6 WHEN (bcdOpgeteld > 9) ELSE bcdOpgeteld;
+	
+	
+	WITH opcode SELECT
+		tussenResult <=
+			(OTHERS => '0')                                                 WHEN "0000",
+			STD_LOGIC_VECTOR(UNSIGNED('0' & A) + 1)                         WHEN "0001",
+			STD_LOGIC_VECTOR(UNSIGNED('0' & A) - 1)                         WHEN "0010",
+			STD_LOGIC_VECTOR(UNSIGNED('0' & A) + UNSIGNED('0' & B))         WHEN "0011",
+			STD_LOGIC_VECTOR(UNSIGNED('0' & A) + UNSIGNED('0' & B) + u_C)   WHEN "0100",
+			STD_LOGIC_VECTOR(bcdAntwoord)                                   WHEN "0101",
+			STD_LOGIC_VECTOR(UNSIGNED('0' & A) - UNSIGNED('0' & B))         WHEN "0110",
+			STD_LOGIC_VECTOR(UNSIGNED('0' & A) - UNSIGNED('0' & B) - u_C)   WHEN "0111",
+			('0' & (A AND B))               WHEN "1000",
+			('0' & (A OR B))                WHEN "1001",
+			('0' & (A XOR B))               WHEN "1010",
+			('0' & (NOT A))                 WHEN "1011",
+			('0' & A(N-2 DOWNTO 0) & '0')   WHEN "1100",    
+			('0' & A(N-2 DOWNTO 0) & A(N-1))WHEN "1101", 
+			('0' & '0' & A(N-1 DOWNTO 1))   WHEN "1110",  
+			('0' & A(0) & A(N-1 DOWNTO 1))  WHEN "1111",
+			(OTHERS => '0')                 WHEN OTHERS;
+	
+	-- Functionality/Operation
+	
+	
+	WITH tussenResult SELECT
+		hexSignal1 <=
+			ZERO  WHEN "0000",
+			ONE   WHEN "0001",
+			TWO   WHEN "0010",
+			THREE WHEN "0011",
+			FOUR  WHEN "0100",
+			FIVE  WHEN "0101",
+			SIX   WHEN "0110",
+			SEVEN WHEN "0111",
+			EIGHT WHEN "1000",
+			NINE  WHEN "1001",
+			HEX_A	WHEN	"1010",
+			HEX_B WHEN	"1011",
+			HEX_C	WHEN	"1100",
+			HEX_D	WHEN	"1101",
+			HEX_E	WHEN	"1110",
+			HEX_F	WHEN	"1111",
+			BLANK	WHEN OTHERS;
+	
+	
+	HEX0 <= 
+		NEGATIVE & '1' WHEN (signed_operation = '1' AND tussenResult(3) = '1') ELSE
+		PLUS     & '1' WHEN (signed_operation = '1' AND tussenResult(3) = '0') ELSE
+		BLANK    & '1';
+	
+	dotSignal0 <= '0';
+   dotSignal1 <= '0';
+	control0 <= '1';
+   control1 <= '1';
+  
 END ARCHITECTURE implementation;
 ------------------------------------------------------------------------------
