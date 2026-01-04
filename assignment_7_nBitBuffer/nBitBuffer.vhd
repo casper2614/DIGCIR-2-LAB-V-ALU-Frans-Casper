@@ -8,9 +8,9 @@
 --!
 --! \todo Students that submit this code have to complete their details:
 --!
---! - Student 1 name         : 
---! - Student 1 studentnumber: 
---! - Student 1 email address: 
+--! - Student 1 name         : Casper Janssen
+--! - Student 1 studentnumber: 2171774
+--! - Student 1 email address: CN.Janssen@student.han.nl
 --!
 --! - Student 2 name         : 
 --! - Student 2 studentnumber: 
@@ -159,16 +159,24 @@ ENTITY nBitBuffer is
 END ENTITY nBitBuffer;
 ------------------------------------------------------------------------------
 ARCHITECTURE implementation0 OF nBitBuffer IS
+    SIGNAL p: STD_LOGIC_VECTOR(N-1 DOWNTO 0);
 BEGIN
 
 --! Assignment-A: Implement here the concurrent VHDL code for the n-bit Buffer.
+    p <= input WHEN clk='0' ELSE p;
+    output <= p WHEN clk='1' ELSE output;
 
 END ARCHITECTURE implementation0;
 ------------------------------------------------------------------------------
---ARCHITECTURE implementation1 OF nBitBuffer IS
---BEGIN
---
-----! Assignment-B: Implement here the sequential VHDL code for the n-bit Buffer
---
---END ARCHITECTURE implementation1;
+ARCHITECTURE implementation1 OF nBitBuffer IS
+BEGIN
+
+    -- Assignment-B: Implement here the sequential VHDL code for the n-bit Buffer
+    PROCESS(clk)
+    BEGIN
+        IF clk='0' THEN
+            output <= input;
+        END IF;
+    END PROCESS;
+END ARCHITECTURE implementation1;
 ------------------------------------------------------------------------------
