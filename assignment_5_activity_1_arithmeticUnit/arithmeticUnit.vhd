@@ -11,9 +11,9 @@
 --! -Student 1 studentnumber: 
 --! -Student 1 email address: 
 --! 
---! -Student 2 name         : 
---! -Student 2 studentnumber: 
---! -Student 2 email address: 
+--! -Student 2 name         : Casper Janssen
+--! -Student 2 studentnumber: 2171774
+--! -Student 2 email address: CN.Janssen@student.han.nl
 --!
 --!
 --! Version History:
@@ -78,7 +78,7 @@ USE ieee.numeric_std.all;     --! SIGNED
 ENTITY arithmeticUnit is
 
    GENERIC (
-      N  :		INTEGER 	:=	4  --! logic unit is designed for 4-bits
+      N  : INTEGER := 4  --! logic unit is designed for 4-bits
       
       --! Implement here CONSTANTS as GENERIC when required.
       
@@ -97,41 +97,41 @@ END ENTITY arithmeticUnit;
 ARCHITECTURE implementation OF arithmeticUnit IS
    
    -- Implement here the SIGNALS to your descretion
-	
-	SIGNAL u_A 	: UNSIGNED(N-1 DOWNTO 0); 
-	SIGNAL u_B	: UNSIGNED(N-1 DOWNTO 0);
-	SIGNAL u_R	: UNSIGNED(N   DOWNTO 0);
-	SIGNAL u_C  : UNSIGNED(N	DOWNTO 0); 	--1 bit used
-	
-	-- Operand A, B, R and C now unsigend
-	
-	SIGNAL bcdOpgeteld	:	UNSIGNED(N DOWNTO 0);
-	SIGNAL bcdAntwoord	:	UNSIGNED(N DOWNTO 0);
-	
+
+    SIGNAL u_A : UNSIGNED(N-1 DOWNTO 0); 
+    SIGNAL u_B : UNSIGNED(N-1 DOWNTO 0);
+    SIGNAL u_R : UNSIGNED(N   DOWNTO 0);
+    SIGNAL u_C : UNSIGNED(N	DOWNTO 0); 	--1 bit used
+
+    -- Operand A, B, R and C now unsigend
+
+    SIGNAL bcdSum	:	UNSIGNED(N DOWNTO 0);
+    SIGNAL bcdResult	:	UNSIGNED(N DOWNTO 0);
+
 
 BEGIN
 
    -- Implement here your arithmetic unit.
-	
-	
-	bcdOpgeteld <= ('0' & u_A) + ('0' & u_B) + u_C;
-	bcdAntwoord <= bcdOpgeteld + 6 WHEN (bcdOpgeteld > 9) ELSE bcdOpgeteld;
-	
-	u_C(0) <= P(0);
-	u_C(N DOWNTO 1) <= (OTHERS => '0');
-	
-	
-	WITH F SELECT
-	u_R <= 	
-		(OTHERS => '0')							WHEN	"000",
-		('0' & u_A) + 1 							WHEN 	"001",
-		('0' & u_A) - 1							WHEN 	"010",
-		('0' & u_A) + ('0' & u_B)				WHEN	"011",
-		('0' & u_A) + ('0' & u_B) + u_C		WHEN 	"100",	
-		bcdAntwoord									WHEN 	"101",
-		('0' & u_A) - ('0' & u_B)				WHEN 	"110",
-		('0' & u_A) + ('0' & u_B) - u_C		WHEN 	"111",
-		(OTHERS => '0')	 						WHEN OTHERS;
-		
-	R <= STD_LOGIC_VECTOR (u_R(N DOWNTO 0));
-   END ARCHITECTURE implementation;
+
+
+    bcdSum <= ('0' & u_A) + ('0' & u_B) + u_C;
+    bcdResult <= bcdSum + 6 WHEN (bcdSum > 9) ELSE bcdSum;
+
+    u_C(0) <= P(0);
+    u_C(N DOWNTO 1) <= (OTHERS => '0');
+
+
+    WITH F SELECT
+    u_R <= (OTHERS => '0')                   WHEN "000",
+           ('0' & u_A) + 1                   WHEN "001",
+           ('0' & u_A) - 1                   WHEN "010",
+           ('0' & u_A) + ('0' & u_B)         WHEN "011",
+           ('0' & u_A) + ('0' & u_B) + u_C   WHEN "100",
+           bcdResult                         WHEN "101",
+           ('0' & u_A) - ('0' & u_B)         WHEN "110",
+           ('0' & u_A) + ('0' & u_B) - u_C   WHEN "111",
+           (OTHERS => '0')                   WHEN OTHERS;
+
+    R <= STD_LOGIC_VECTOR (u_R(N DOWNTO 0));
+
+END ARCHITECTURE implementation;
