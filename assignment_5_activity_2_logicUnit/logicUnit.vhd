@@ -11,9 +11,9 @@
 --! -Student 1 studentnumber: 
 --! -Student 1 email address: 
 --! 
---! -Student 2 name         : 
---! -Student 2 studentnumber: 
---! -Student 2 email address: 
+--! -Student 2 name         : Casper Janssen
+--! -Student 2 studentnumber: 2171774
+--! -Student 2 email address: CN.Janssen@student.han.nl
 --!
 --!
 --! Version History:
@@ -68,6 +68,7 @@
 ------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
+
 ------------------------------------------------------------------------------
 ENTITY logicUnit is
 
@@ -92,5 +93,16 @@ BEGIN
 
    --! Implement here the logic-unit that executes the operations as presented
    --! in table 1.
+	
+WITH F(2 DOWNTO 0) SELECT
+    R <=    (A AND B)                       WHEN "000",
+            (A OR B)                        WHEN "001",
+            (A XOR B)                       WHEN "010",
+            (NOT A)                         WHEN "011",
+            (A(N-2 DOWNTO 0) & '0') 		WHEN "100", 	-- shift left
+            (A(N-2 DOWNTO 0) & A(N-1))		WHEN "101", --wat hier staat basicly betekent, je pakt alleen bit 'N-2' t/m 0 (--Dus "4(321)"--) en voeg je 'N-1' toe achterin (-- Dus "321(4)"--) 
+            ('0' & (A(N-1 DOWNTO 1)))	 	WHEN "110",	-- shift right
+            A(N-4) & (A(N-1 DOWNTO 1))      WHEN "111",	-- reverse van daarnet
+            (OTHERS => '0')                 WHEN OTHERS;
 
 END ARCHITECTURE implementation;
