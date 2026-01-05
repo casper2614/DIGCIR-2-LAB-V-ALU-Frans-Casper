@@ -150,24 +150,24 @@ ENTITY operandResultInterpreter is
    BLANK : STD_LOGIC_VECTOR(0 TO 6) := "1111111";
 	
 	PLUS	: STD_LOGIC_VECTOR(0 TO 6) 	:= "1111000";
-	NEGATIVE : STD_LOGIC_VECTOR(0 TO 6) := "1111110"
+	NEGATIVE : STD_LOGIC_VECTOR(0 TO 6) := "1111110"	
 		
    );
 	
    
    PORT (
       opcode :           	IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! 4-bit opcode
-      result :           	IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! n-bit binary input carrying Result
+      -- result :           	IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! n-bit binary input carrying Result
       signed_operation : 	IN   STD_LOGIC;
       hexSignal0,
-      hexSignal1 :       	OUT  STD_LOGIC_VECTOR(3 DOWNTO 0);
+      hexSignal1 :       	BUFFER  STD_LOGIC_VECTOR(3 DOWNTO 0);
       dotSignal0,	
       control0,
       dotSignal1,
       control1 :         	OUT  STD_LOGIC;
 		
 		HEX0 : OUT STD_LOGIC_VECTOR(0 TO 7);
-		HEX1 : OUT STD_LOGIC_VECTOR(0 TO 7);
+		HEX1 : OUT STD_LOGIC_VECTOR(0 TO 6);
 		
 		A	:				IN  STD_LOGIC_VECTOR (N-1 DOWNTO 0); --Operand A
 		B	:				IN  STD_LOGIC_VECTOR (N-1 DOWNTO 0)  --Operand B
@@ -187,6 +187,7 @@ ARCHITECTURE implementation OF operandResultInterpreter IS
 	
 	SIGNAL u_A 	: UNSIGNED(N-1 DOWNTO 0); 
 	SIGNAL u_B	: UNSIGNED(N-1 DOWNTO 0);
+	
 	SIGNAL u_R	: UNSIGNED(N   DOWNTO 0);
 	SIGNAL u_C  : UNSIGNED(N	DOWNTO 0);
 	
@@ -197,6 +198,9 @@ ARCHITECTURE implementation OF operandResultInterpreter IS
 
 BEGIN
 
+	u_A <= UNSIGNED(A);
+	u_B <= UNSIGNED(B);
+	
 	bcdOpgeteld <= ('0' & u_A) + ('0' & u_B) + u_C;
 	bcdAntwoord <= bcdOpgeteld + 6 WHEN (bcdOpgeteld > 9) ELSE bcdOpgeteld;
 	
@@ -224,13 +228,17 @@ BEGIN
 	-- Functionality/Operation
 	
 	
-	WITH tussenResult SELECT
-		hexSignal1 <=
+	
+	hexSignal1 <= tussenResult (N-1 DOWNTO 0);
+	
+	
+	WITH hexSignal1 SELECT
+		HEX1 <=
 			ZERO  WHEN "0000",
 			ONE   WHEN "0001",
 			TWO   WHEN "0010",
 			THREE WHEN "0011",
-			FOUR  WHEN "0100",
+			FOUR  WHEN "0100",	
 			FIVE  WHEN "0101",
 			SIX   WHEN "0110",
 			SEVEN WHEN "0111",
@@ -246,9 +254,11 @@ BEGIN
 	
 	
 	HEX0 <= 
-		NEGATIVE & '1' WHEN (signed_operation = '1' AND tussenResult(3) = '1') ELSE
-		PLUS     & '1' WHEN (signed_operation = '1' AND tussenResult(3) = '0') ELSE
+		NEGATIVE & '1' WHEN (signed_operation = '1' AND tussenResult(N) = '1') ELSE
+		PLUS     & '1' WHEN (signed_operation = '1' AND tussenResult(N) = '0') ELSE
 		BLANK    & '1';
+		
+		
 	
 	dotSignal0 <= '0';
    dotSignal1 <= '0';
