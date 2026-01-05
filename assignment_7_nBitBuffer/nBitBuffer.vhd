@@ -163,8 +163,8 @@ ARCHITECTURE implementation0 OF nBitBuffer IS
 BEGIN
 
 --! Assignment-A: Implement here the concurrent VHDL code for the n-bit Buffer.
-    p <= input WHEN clk='0' ELSE p;
-    output <= p WHEN clk='1' ELSE output;
+
+    output <= input WHEN rising_edge(clk) ELSE UNAFFECTED;
 
 END ARCHITECTURE implementation0;
 ------------------------------------------------------------------------------
@@ -174,7 +174,7 @@ BEGIN
     -- Assignment-B: Implement here the sequential VHDL code for the n-bit Buffer
     PROCESS(clk)
     BEGIN
-        IF clk='0' THEN
+        IF rising_edge(clk) THEN
             output <= input;
         END IF;
     END PROCESS;
