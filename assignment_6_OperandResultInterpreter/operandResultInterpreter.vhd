@@ -11,9 +11,9 @@
 --! Student 1 studentnumber: 2151119
 --! Student 1 email address: fxjba.ebbers@student.han.nl
 --!
---! Student 2 name         : 
---! Student 2 studentnumber: 
---! Student 2 email address: 
+--! Student 2 name         : Casper Janssen
+--! Student 2 studentnumber: 2171774
+--! Student 2 email address: CN.Janssen@student.han.nl
 --!
 --! Student 3 name         : 
 --! Student 3 studentnumber: 
@@ -133,7 +133,7 @@ ENTITY operandResultInterpreter is
 	
 	
 
-   DISPLAY_OFF : STD_LOGIC_VECTOR(0 TO 6) := "1111111";
+    DISPLAY_OFF : STD_LOGIC_VECTOR(0 TO 6) := "1111111";
 	PLUS	: STD_LOGIC_VECTOR(0 TO 6) 	:= "1111000";
 	NEGATIVE : STD_LOGIC_VECTOR(0 TO 6) := "1111110"	
 		
@@ -144,7 +144,7 @@ ENTITY operandResultInterpreter is
       opcode :           	IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! 4-bit opcode
       result :           	IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! n-bit binary input carrying Result
       signed_operation : 	IN   STD_LOGIC;
-      hexSignal0:				OUT  STD_LOGIC_VECTOR(3 DOWNTO 0);
+      hexSignal0:			OUT  STD_LOGIC_VECTOR(3 DOWNTO 0);
       hexSignal1 :       	BUFFER  STD_LOGIC_VECTOR(3 DOWNTO 0);
       dotSignal0,	
       control0,
@@ -152,7 +152,7 @@ ENTITY operandResultInterpreter is
       control1 :         	OUT  STD_LOGIC;
 		
 		HEX0,
-		HEX1 : 					OUT STD_LOGIC_VECTOR(0 TO 6)
+		HEX1 : 				OUT STD_LOGIC_VECTOR(0 TO 6)
 		
    );
    
@@ -186,7 +186,7 @@ BEGIN
             END IF;
             
 
-            control1 <= '1';  -- Display 0 aan zetten 
+            control1 <= '1';  -- Display 1 aan zetten 
         ELSE
             hexSignal1 <= "0000"; 
             control1   <= '0';    --basicly alles uit
