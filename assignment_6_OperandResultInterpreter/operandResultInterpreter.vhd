@@ -7,13 +7,13 @@
 --!
 --! \todo Students that submit this code have to complete their details:
 --!
---! Student 1 name         : 
---! Student 1 studentnumber: 
---! Student 1 email address: 
+--! Student 1 name         : Frans Ebbers
+--! Student 1 studentnumber: 2151119
+--! Student 1 email address: fxjba.ebbers@student.han.nl
 --!
---! Student 2 name         : 
---! Student 2 studentnumber: 
---! Student 2 email address: 
+--! Student 2 name         : Casper Janssen
+--! Student 2 studentnumber: 2171774
+--! Student 2 email address: CN.Janssen@student.han.nl
 --!
 --! Student 3 name         : 
 --! Student 3 studentnumber: 
@@ -126,29 +126,73 @@ USE ieee.numeric_std.all;     --! SIGNED
 ------------------------------------------------------------------------------
 ENTITY operandResultInterpreter is
 
+     GENERIC (
+      N: INTEGER := 4;  --! logic unit is designed for 4-bits
+      
       --! Implement here CONSTANTS as GENERIC when required.
+	
+	
 
+    DISPLAY_OFF : STD_LOGIC_VECTOR(0 TO 6) := "1111111";
+	PLUS	: STD_LOGIC_VECTOR(0 TO 6) 	:= "1111000";
+	NEGATIVE : STD_LOGIC_VECTOR(0 TO 6) := "1111110"	
+		
+   );
+	
+   
    PORT (
-      opcode :           IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! 4-bit opcode
-      result :           IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! n-bit binary input carrying Result
-      signed_operation : IN   STD_LOGIC;
-      hexSignal0,
-      hexSignal1 :       OUT  STD_LOGIC_VECTOR(3 DOWNTO 0);
-      dotSignal0,
+      opcode :           	IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! 4-bit opcode
+      result :           	IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! n-bit binary input carrying Result
+      signed_operation : 	IN   STD_LOGIC;
+      hexSignal0:			OUT  STD_LOGIC_VECTOR(3 DOWNTO 0);
+      hexSignal1 :       	BUFFER  STD_LOGIC_VECTOR(3 DOWNTO 0);
+      dotSignal0,	
       control0,
       dotSignal1,
-      control1 :         OUT  STD_LOGIC
+      control1 :         	OUT  STD_LOGIC;
+		
+		HEX0,
+		HEX1 : 				OUT STD_LOGIC_VECTOR(0 TO 6)
+		
    );
    
 END ENTITY operandResultInterpreter;
-------------------------------------------------------------------------------
+
+
 ARCHITECTURE implementation OF operandResultInterpreter IS
 
-   -- Implement here the SIGNALS to your descretion
+	SIGNAL opcodeSelected : STD_LOGIC;
 
 BEGIN
+   hexSignal0 <= result;
+	control0   <= '1';
+	
+	opcodeSelected <= '1' WHEN 
+        (opcode = "0001" OR
+         opcode = "0010" OR
+         opcode = "0011" OR
+         opcode = "0100" OR
+         opcode = "0110" OR
+         opcode = "0111") 
+        ELSE '0';
+	
+	PROCESS(signed_operation, opcodeSelected, result)
+    BEGIN
+        IF signed_operation = '1' AND opcodeSelected = '1' THEN
+            IF SIGNED(result) < 0 THEN
+                hexSignal1 <= "1011"; -- hexSingal voor MIN 
+            ELSE
+                hexSignal1 <= "1010"; -- hexSignal voor PLUS
+            END IF;
+            
 
-   -- Implement here your logic.
+            control1 <= '1';  -- Display 1 aan zetten 
+        ELSE
+            hexSignal1 <= "0000"; 
+            control1   <= '0';    --basicly alles uit
+        END IF;
+    END PROCESS;
 
+  
 END ARCHITECTURE implementation;
-------------------------------------------------------------------------------
+
