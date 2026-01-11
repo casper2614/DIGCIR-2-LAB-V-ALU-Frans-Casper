@@ -28,14 +28,15 @@ END ENTITY logicUnit;
 ARCHITECTURE implementation OF logicUnit IS
 BEGIN
 
---  #########################################################################
---  #########################################################################
---  ##                                                                     ##
---  ##                                                                     ##
---  ##  This file shall be replaced by the file produced in assignment 3   ##
---  ##                                                                     ##
---  ##                                                                     ##
---  #########################################################################
---  #########################################################################
+WITH F SELECT
+	R <= 	(A AND B)		WHEN 						"000",
+			(A OR B)			WHEN 						"001",
+			(A XOR B)		WHEN						"010",
+			(NOT A)			WHEN						"011",
+			(A(N-2 DOWNTO 0) & '0') 		WHEN	"100", 	-- shift left
+			(A(N-2 DOWNTO 0) & A(N-1))		WHEN 	"101", --wat hier staat basicly betekent, je pakt alleen bit 'N-2' t/m 0 (--Dus "4(321)"--) en voeg je 'N-1' toe achterin (-- Dus "321(4)"--) 
+			('0' & (A(N-1 DOWNTO 1)))	 	WHEN 	"110",	-- shift right
+			A(N-4) & (A(N-1 DOWNTO 1)) 	WHEN 	"111",	-- reverse van daarnet
+			(OTHERS => '0') 	WHEN				  OTHERS;
 
 END ARCHITECTURE implementation;

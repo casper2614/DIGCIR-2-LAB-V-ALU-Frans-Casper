@@ -28,15 +28,12 @@ END ENTITY nBitBuffer;
 ARCHITECTURE implementation OF nBitBuffer IS
 BEGIN
 
---  #########################################################################
---  #########################################################################
---  ##                                                                     ##
---  ##                                                                     ##
---  ##  This file shall be replaced by the file produced in assignment 1   ##
---  ##                                                                     ##
---  ##                                                                     ##
---  #########################################################################
---  #########################################################################
+    PROCESS(clk)
+    BEGIN
+        IF rising_edge(clk) THEN
+            output <= input;
+        END IF;
+    END PROCESS;
 
 END ARCHITECTURE implementation;
 -----------------------------------------------------------------------------

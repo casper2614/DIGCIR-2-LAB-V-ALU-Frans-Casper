@@ -28,17 +28,39 @@ ENTITY operandResultInterpreter is
 END ENTITY operandResultInterpreter;
 ------------------------------------------------------------------------------
 ARCHITECTURE implementation OF operandResultInterpreter IS
-BEGIN
 
---  #########################################################################
---  #########################################################################
---  ##                                                                     ##
---  ##                                                                     ##
---  ##  This file shall be replaced by the file produced in assignment 4   ##
---  ##                                                                     ##
---  ##                                                                     ##
---  #########################################################################
---  #########################################################################
+	SIGNAL opcodeSelected : STD_LOGIC;
+
+BEGIN
+   hexSignal0 <= result;
+	control0   <= '1';
+	
+	opcodeSelected <= '1' WHEN 
+        (opcode = "0001" OR
+         opcode = "0010" OR
+         opcode = "0011" OR
+         opcode = "0100" OR
+         opcode = "0110" OR
+         opcode = "0111") 
+        ELSE '0';
+	
+	PROCESS(signed_operation, opcodeSelected, result)
+    BEGIN
+        IF signed_operation = '1' AND opcodeSelected = '1' THEN
+            IF SIGNED(result) < 0 THEN
+                hexSignal1 <= "1011"; -- hexSingal voor MIN 
+            ELSE
+                hexSignal1 <= "1010"; -- hexSignal voor PLUS
+            END IF;
+            
+            control1 <= '1';  -- display 1 aan zetten 
+        ELSE
+            hexSignal1 <= "0000"; 
+            control1   <= '0';    --basicly alles uit
+        END IF;
+    END PROCESS;
+
+  
 
 END ARCHITECTURE implementation;
 ------------------------------------------------------------------------------

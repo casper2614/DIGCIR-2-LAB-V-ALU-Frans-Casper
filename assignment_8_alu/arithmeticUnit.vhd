@@ -28,16 +28,37 @@ ENTITY arithmeticUnit is
 END ENTITY arithmeticUnit;
 ------------------------------------------------------------------------------
 ARCHITECTURE implementation OF arithmeticUnit IS
+
+	SIGNAL u_A 	: UNSIGNED(N-1 DOWNTO 0); 
+	SIGNAL u_B	: UNSIGNED(N-1 DOWNTO 0);
+	SIGNAL u_C  : UNSIGNED(N	DOWNTO 0);
+	
+	SIGNAL bcdOpgeteld	:	UNSIGNED(N DOWNTO 0);
+	SIGNAL bcdAntwoord	:	UNSIGNED(N DOWNTO 0);
+
 BEGIN
 
---  #########################################################################
---  #########################################################################
---  ##                                                                     ##
---  ##                                                                     ##
---  ##  This file shall be replaced by the file produced in assignment 3   ##
---  ##                                                                     ##
---  ##                                                                     ##
---  #########################################################################
---  #########################################################################
+	bcdOpgeteld <= ('0' & u_A) + ('0' & u_B) + u_C;
+	bcdAntwoord <= bcdOpgeteld + 6 WHEN (bcdOpgeteld > 9) ELSE bcdOpgeteld;
+	
+	
+	u_C(0) <= P(0);
+	u_C(N DOWNTO 1) <= (OTHERS => '0');
+	
+		WITH F SELECT
+		R <=
+			(OTHERS => '0')                                                 WHEN "000",
+			STD_LOGIC_VECTOR(UNSIGNED('0' & A) + 1)                         WHEN "001",
+			STD_LOGIC_VECTOR(UNSIGNED('0' & A) - 1)                         WHEN "010",
+			STD_LOGIC_VECTOR(UNSIGNED('0' & A) + UNSIGNED('0' & B))         WHEN "011",
+			STD_LOGIC_VECTOR(UNSIGNED('0' & A) + UNSIGNED('0' & B) + u_C)   WHEN "100",
+			STD_LOGIC_VECTOR(bcdAntwoord)                                   WHEN "101",
+			STD_LOGIC_VECTOR(UNSIGNED('0' & A) - UNSIGNED('0' & B))         WHEN "110",
+			STD_LOGIC_VECTOR(UNSIGNED('0' & A) - UNSIGNED('0' & B) - u_C)   WHEN "111",
+			(OTHERS => '0')                 WHEN OTHERS;
+
+
+
+
 
 END ARCHITECTURE implementation;
