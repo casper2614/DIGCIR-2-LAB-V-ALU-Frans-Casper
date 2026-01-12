@@ -7,9 +7,9 @@
 --!
 --! \todo Students that submit this code have to complete their details:
 --!
---! -Student 1 name         : 
---! -Student 1 studentnumber: 
---! -Student 1 email address: 
+--! -Student 1 name         : Frans Ebbers
+--! -Student 1 studentnumber: 2151119
+--! -Student 1 email address: fxjba.ebbers@student.han.nl
 --! 
 --! -Student 2 name         : Casper Janssen
 --! -Student 2 studentnumber: 2171774
@@ -98,15 +98,15 @@ ARCHITECTURE implementation OF arithmeticUnit IS
    
    -- Implement here the SIGNALS to your descretion
 
-    SIGNAL u_A : UNSIGNED(N-1 DOWNTO 0); 
-    SIGNAL u_B : UNSIGNED(N-1 DOWNTO 0);
-    SIGNAL u_R : UNSIGNED(N   DOWNTO 0);
-    SIGNAL u_C : UNSIGNED(N	DOWNTO 0); 	--1 bit used
+    SIGNAL u_A : UNSIGNED(N-1 DOWNTO 0) := 0; 
+    SIGNAL u_B : UNSIGNED(N-1 DOWNTO 0) := 0;
+    SIGNAL u_R : UNSIGNED(N   DOWNTO 0) := 0;
+    SIGNAL u_C : UNSIGNED(N	DOWNTO 0) := 0; 	--1 bit used
 
     -- Operand A, B, R and C now unsigend
 
-    SIGNAL bcdSum	:	UNSIGNED(N DOWNTO 0);
-    SIGNAL bcdResult	:	UNSIGNED(N DOWNTO 0);
+    SIGNAL bcdSum	:	UNSIGNED(N DOWNTO 0) := 0;
+    SIGNAL bcdResult	:	UNSIGNED(N DOWNTO 0) := 0;
 
 
 BEGIN
@@ -114,24 +114,24 @@ BEGIN
    -- Implement here your arithmetic unit.
 
 
-    bcdSum <= ('0' & u_A) + ('0' & u_B) + u_C;
-    bcdResult <= bcdSum + 6 WHEN (bcdSum > 9) ELSE bcdSum;
+    bcdSum <= ('0' & u_A) + ('0' & u_B) + u_C; -- Calculation for Binary Coded Decimal Sum
+    bcdResult <= bcdSum + 6 WHEN (bcdSum > 9) ELSE bcdSum; -- Formatting of result
 
-    u_C(0) <= P(0);
-    u_C(N DOWNTO 1) <= (OTHERS => '0');
+    u_C(0) <= P(0); --Convert carry bit (P(0)) to unsigned and assign to u_C()
+    u_C(N DOWNTO 1) <= (OTHERS => '0'); -- Fill rest with zeros
 
 
     WITH F SELECT
-    u_R <= (OTHERS => '0')                   WHEN "000",
-           ('0' & u_A) + 1                   WHEN "001",
-           ('0' & u_A) - 1                   WHEN "010",
-           ('0' & u_A) + ('0' & u_B)         WHEN "011",
-           ('0' & u_A) + ('0' & u_B) + u_C   WHEN "100",
-           bcdResult                         WHEN "101",
-           ('0' & u_A) - ('0' & u_B)         WHEN "110",
-           ('0' & u_A) + ('0' & u_B) - u_C   WHEN "111",
-           (OTHERS => '0')                   WHEN OTHERS;
+    u_R <= (OTHERS => '0')                   WHEN "000", -- Return zero when operation/opcode is all zero
+           ('0' & u_A) + 1                   WHEN "001", -- Append 0 to left and increment
+           ('0' & u_A) - 1                   WHEN "010", -- Append 0 to left and decrement
+           ('0' & u_A) + ('0' & u_B)         WHEN "011", -- Append 0 to operand A and B and sum
+           ('0' & u_A) + ('0' & u_B) + u_C   WHEN "100", -- Append 0 to operand A and B and sum with carry
+           bcdResult                         WHEN "101", -- Show BCD
+           ('0' & u_A) - ('0' & u_B)         WHEN "110", -- Append 0 to operand A and B and subtract
+           ('0' & u_A) + ('0' & u_B) - u_C   WHEN "111", -- Append 0 to operand A and B and subtract with carry
+           (OTHERS => '0')                   WHEN OTHERS; -- Else return all zero
 
-    R <= STD_LOGIC_VECTOR (u_R(N DOWNTO 0));
+    R <= STD_LOGIC_VECTOR (u_R(N DOWNTO 0)); -- Convert result from unsigned to STD_LOGIC_VECTOR
 
 END ARCHITECTURE implementation;

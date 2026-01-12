@@ -7,9 +7,9 @@
 --!
 --! \todo Students that submit this code have to complete their details:
 --!
---! -Student 1 name         : 
---! -Student 1 studentnumber: 
---! -Student 1 email address: 
+--! -Student 1 name         : Frans Ebbers
+--! -Student 1 studentnumber: 2151119
+--! -Student 1 email address: fxjba.ebbers@student.han.nl
 --! 
 --! -Student 2 name         : Casper Janssen
 --! -Student 2 studentnumber: 2171774
@@ -95,14 +95,14 @@ BEGIN
    --! in table 1.
 	
 WITH F(2 DOWNTO 0) SELECT
-    R <=    (A AND B)                       WHEN "000",
-            (A OR B)                        WHEN "001",
-            (A XOR B)                       WHEN "010",
-            (NOT A)                         WHEN "011",
-            (A(N-2 DOWNTO 0) & '0') 		WHEN "100", 	-- shift left
-            (A(N-2 DOWNTO 0) & A(N-1))		WHEN "101", --wat hier staat basicly betekent, je pakt alleen bit 'N-2' t/m 0 (--Dus "4(321)"--) en voeg je 'N-1' toe achterin (-- Dus "321(4)"--) 
-            ('0' & (A(N-1 DOWNTO 1)))	 	WHEN "110",	-- shift right
-            A(N-4) & (A(N-1 DOWNTO 1))      WHEN "111",	-- reverse van daarnet
-            (OTHERS => '0')                 WHEN OTHERS;
+    R <=    (A AND B)                       WHEN "000", -- And-gate A and B
+            (A OR B)                        WHEN "001", -- Or-gate A and B
+            (A XOR B)                       WHEN "010", -- Xor-gate A and B
+            (NOT A)                         WHEN "011", -- Not-gate A
+            (A(N-2 DOWNTO 0) & '0') 		WHEN "100", -- Append 0 to right side of A, meaning left shift
+            (A(N-2 DOWNTO 0) & A(N-1))		WHEN "101", -- Wrap arround, MSB/Left bit will be appended to right side/LSB 
+            ('0' & (A(N-1 DOWNTO 1)))	 	WHEN "110",	-- Append 0 to left side of A, meaning right shift
+            A(N-4) & (A(N-1 DOWNTO 1))      WHEN "111", -- Wrap arround reverse, LSB/Right bit will be appened to left side/MSB
+            (OTHERS => '0')                 WHEN OTHERS; -- Fallback, when opcode isn't valid, return all zero's
 
 END ARCHITECTURE implementation;

@@ -147,7 +147,7 @@ USE ieee.std_logic_1164.all;
 ENTITY nBitBuffer is
 
    GENERIC (
-      N: INTEGER := 4
+      N: INTEGER := 4 -- Global variable to define size of buffer
    );
    
    PORT (
@@ -163,7 +163,7 @@ ARCHITECTURE implementation0 OF nBitBuffer IS
 BEGIN
 
 --! Assignment-A: Implement here the concurrent VHDL code for the n-bit Buffer.
-
+-- Concurrent implementation, do not use
     output <= input WHEN rising_edge(clk) ELSE UNAFFECTED;
 
 END ARCHITECTURE implementation0;

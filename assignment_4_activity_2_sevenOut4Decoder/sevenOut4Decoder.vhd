@@ -11,9 +11,9 @@
 --! -Student 1 studentnumber: 2171774
 --! -Student 1 email address: CN.Janssen@student.han.nl
 --!
---! -Student 2 name         : 
---! -Student 2 studentnumber: 
---! -Student 2 email address: 
+--! -Student 2 name         : Frans Ebbers
+--! -Student 2 studentnumber: 2151119
+--! -Student 2 email address: fxjba.ebbers@student.han.nl
 --!
 --!
 --! Version History:
@@ -143,7 +143,7 @@ ENTITY sevenOut4Decoder is
 --! '1' to switch the LED off. 
 
    -- Implement here CONSTANT
-   
+   -- Constant for all characters
    CONSTANT zero : STD_LOGIC_VECTOR(0 TO 6) := "0000001";
    CONSTANT one : STD_LOGIC_VECTOR(0 TO 6) := "1001111";
    CONSTANT two : STD_LOGIC_VECTOR(0 TO 6) := "0010010";
@@ -173,7 +173,7 @@ END ENTITY sevenOut4Decoder;
 ------------------------------------------------------------------------------
 ARCHITECTURE implementation OF sevenOut4Decoder IS
    
-   -- add here signals to your descretion
+   -- Signals for standard and extended character bank, can be selected with ctrl
    SIGNAL std_seg: STD_LOGIC_VECTOR(0 TO 6) := "0000000";
    SIGNAL ext_seg: STD_LOGIC_VECTOR(0 TO 6) := "0000000";
    

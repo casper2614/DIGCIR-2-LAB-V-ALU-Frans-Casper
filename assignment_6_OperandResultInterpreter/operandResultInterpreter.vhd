@@ -130,8 +130,6 @@ ENTITY operandResultInterpreter is
       N: INTEGER := 4;  --! logic unit is designed for 4-bits
       
       --! Implement here CONSTANTS as GENERIC when required.
-	
-	
 
     DISPLAY_OFF : STD_LOGIC_VECTOR(0 TO 6) := "1111111";
 	PLUS	: STD_LOGIC_VECTOR(0 TO 6) 	:= "1111000";
@@ -144,15 +142,12 @@ ENTITY operandResultInterpreter is
       opcode :           	IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! 4-bit opcode
       result :           	IN   STD_LOGIC_VECTOR(3 DOWNTO 0); --! n-bit binary input carrying Result
       signed_operation : 	IN   STD_LOGIC;
-      hexSignal0:			OUT  STD_LOGIC_VECTOR(3 DOWNTO 0);
-      hexSignal1 :       	BUFFER  STD_LOGIC_VECTOR(3 DOWNTO 0);
+      hexSignal0,
+      hexSignal1 :       	OUT  STD_LOGIC_VECTOR(3 DOWNTO 0);
       dotSignal0,	
       control0,
       dotSignal1,
-      control1 :         	OUT  STD_LOGIC;
-		
-		HEX0,
-		HEX1 : 				OUT STD_LOGIC_VECTOR(0 TO 6)
+      control1 :         	OUT  STD_LOGIC
 		
    );
    
@@ -161,10 +156,10 @@ END ENTITY operandResultInterpreter;
 
 ARCHITECTURE implementation OF operandResultInterpreter IS
 
-	SIGNAL opcodeSelected : STD_LOGIC;
+	SIGNAL opcodeSelected : STD_LOGIC := '0';
 
 BEGIN
-   hexSignal0 <= result;
+    hexSignal0 <= result;
 	control0   <= '1';
 	
 	opcodeSelected <= '1' WHEN 
