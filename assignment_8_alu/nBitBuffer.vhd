@@ -157,7 +157,15 @@ ENTITY nBitBuffer is
    );
    
 END ENTITY nBitBuffer;
+------------------------------------------------------------------------------
+ARCHITECTURE implementation0 OF nBitBuffer IS
+    SIGNAL p: STD_LOGIC_VECTOR(N-1 DOWNTO 0) := "0000";
+BEGIN
 
+--! Assignment-A: Implement here the concurrent VHDL code for the n-bit Buffer.
+    output <= input WHEN rising_edge(clk) ELSE UNAFFECTED; -- ouput is input when rising edge, else dont affect
+
+END ARCHITECTURE implementation0;
 ------------------------------------------------------------------------------
 ARCHITECTURE implementation1 OF nBitBuffer IS
 BEGIN
@@ -165,8 +173,8 @@ BEGIN
     -- Assignment-B: Implement here the sequential VHDL code for the n-bit Buffer
     PROCESS(clk)
     BEGIN
-        IF rising_edge(clk) THEN
-            output <= input;
+        IF rising_edge(clk) THEN -- execute on rising edge
+            output <= input; -- output is input value
         END IF;
     END PROCESS;
 END ARCHITECTURE implementation1;

@@ -171,10 +171,10 @@ BEGIN
 --! and shall be replaced by your function.  
 --! See assignment 1-c in the lab manual.
 
-   y <= (NOT u OR v OR NOT x) AND
+   y <= (NOT u OR v OR NOT x)     AND
         (NOT u OR NOT v OR NOT w) AND
-        (u OR NOT v OR w) AND
-        (u OR v OR w OR x) AND
+        (u OR NOT v OR w)         AND
+        (u OR v OR w OR x)        AND
         (u OR v OR NOT w OR NOT x); --! Doesn't work, karnaugh maps have been checked and function rewriten multiple times.
 
 

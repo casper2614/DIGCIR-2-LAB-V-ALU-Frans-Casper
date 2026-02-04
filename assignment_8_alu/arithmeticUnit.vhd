@@ -79,9 +79,6 @@ ENTITY arithmeticUnit is
 
    GENERIC (
       N  : INTEGER := 4  --! logic unit is designed for 4-bits
-      
-      --! Implement here CONSTANTS as GENERIC when required.
-      
    );
    
    PORT (
@@ -95,9 +92,6 @@ ENTITY arithmeticUnit is
 END ENTITY arithmeticUnit;
 ------------------------------------------------------------------------------
 ARCHITECTURE implementation OF arithmeticUnit IS
-   
-   -- Implement here the SIGNALS to your descretion
-
     SIGNAL u_A : UNSIGNED(N-1 DOWNTO 0) := 0; 
     SIGNAL u_B : UNSIGNED(N-1 DOWNTO 0) := 0;
     SIGNAL u_R : UNSIGNED(N   DOWNTO 0) := 0;
@@ -105,19 +99,16 @@ ARCHITECTURE implementation OF arithmeticUnit IS
 
     -- Operand A, B, R and C now unsigend
 
-    SIGNAL bcdSum	:	UNSIGNED(N DOWNTO 0) := 0;
+    SIGNAL bcdSum	   :	UNSIGNED(N DOWNTO 0) := 0;
     SIGNAL bcdResult	:	UNSIGNED(N DOWNTO 0) := 0;
 
 
 BEGIN
 
-   -- Implement here your arithmetic unit.
-
-
-    bcdSum <= ('0' & u_A) + ('0' & u_B) + u_C; -- Calculation for Binary Coded Decimal Sum
+    bcdSum    <= ('0' & u_A) + ('0' & u_B) + u_C; -- Calculation for Binary Coded Decimal Sum
     bcdResult <= bcdSum + 6 WHEN (bcdSum > 9) ELSE bcdSum; -- Formatting of result
 
-    u_C(0) <= P(0); --Convert carry bit (P(0)) to unsigned and assign to u_C()
+    u_C(0)          <= P(0); --Convert carry bit (P(0)) to unsigned and assign to u_C()
     u_C(N DOWNTO 1) <= (OTHERS => '0'); -- Fill rest with zeros
 
 

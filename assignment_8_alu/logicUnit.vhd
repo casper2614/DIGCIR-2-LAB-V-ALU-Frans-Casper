@@ -74,9 +74,6 @@ ENTITY logicUnit is
 
    GENERIC (
       N: INTEGER := 4  --! logic unit is designed for 4-bits
-      
-      --! Implement here CONSTANTS as GENERIC when required.
-      
    );
    
    PORT (
@@ -90,18 +87,15 @@ END ENTITY logicUnit;
 ------------------------------------------------------------------------------
 ARCHITECTURE implementation OF logicUnit IS
 BEGIN
-
-   --! Implement here the logic-unit that executes the operations as presented
-   --! in table 1.
 	
-WITH F(2 DOWNTO 0) SELECT
+WITH F(2 DOWNTO 0) SELECT -- With code of operation (opcode), select output
     R <=    (A AND B)                       WHEN "000", -- And-gate A and B
             (A OR B)                        WHEN "001", -- Or-gate A and B
             (A XOR B)                       WHEN "010", -- Xor-gate A and B
             (NOT A)                         WHEN "011", -- Not-gate A
-            (A(N-2 DOWNTO 0) & '0') 		WHEN "100", -- Append 0 to right side of A, meaning left shift
-            (A(N-2 DOWNTO 0) & A(N-1))		WHEN "101", -- Wrap arround, MSB/Left bit will be appended to right side/LSB 
-            ('0' & (A(N-1 DOWNTO 1)))	 	WHEN "110",	-- Append 0 to left side of A, meaning right shift
+            (A(N-2 DOWNTO 0) & '0') 		  WHEN "100", -- Append 0 to right side of A, meaning left shift
+            (A(N-2 DOWNTO 0) & A(N-1))		  WHEN "101", -- Wrap arround, MSB/Left bit will be appended to right side/LSB 
+            ('0' & (A(N-1 DOWNTO 1)))	 	  WHEN "110",	-- Append 0 to left side of A, meaning right shift
             A(N-4) & (A(N-1 DOWNTO 1))      WHEN "111", -- Wrap arround reverse, LSB/Right bit will be appened to left side/MSB
             (OTHERS => '0')                 WHEN OTHERS; -- Fallback, when opcode isn't valid, return all zero's
 
